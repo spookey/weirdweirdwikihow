@@ -3,7 +3,8 @@ LEVEL := wwwhow
 .PHONY: run
 
 run:
-	@echo
+	python3 run.py \
+		--verbose debug
 
 .PHONY: lint sort
 
