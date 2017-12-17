@@ -1,7 +1,7 @@
+from logging import getLogger
+
 from wwwhow.lib.args import arguments
 from wwwhow.lib.note import log_setup
-
-from logging import getLogger
 
 LOG = getLogger(__name__)
 

@@ -4,7 +4,7 @@ from logging import (
 from logging.handlers import RotatingFileHandler
 from os import path
 
-from wwwhow.defaults import NAME_APP
+from wwwhow.lib.conf import NAME_APP
 
 LOG_LEVELS = dict(debug=DEBUG, error=ERROR, info=INFO, warning=WARNING)
 

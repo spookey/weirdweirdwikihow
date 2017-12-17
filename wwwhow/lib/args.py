@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from wwwhow.defaults import DIR_LOGGING, NAME_APP
+from wwwhow.lib.conf import DIR_LOGS, NAME_APP
 from wwwhow.lib.note import LOG_LEVELS
 
 
@@ -14,8 +14,8 @@ def arguments():
     )
 
     parser.add_argument(
-        '-l', '--log', default=DIR_LOGGING,
-        help=_help('logging directory')
+        '-l', '--log', default=DIR_LOGS,
+        help=_help('logging directory - should exist')
     )
     parser.add_argument(
         '-v', '--verbose', default='warning',
