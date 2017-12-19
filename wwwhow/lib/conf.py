@@ -13,4 +13,5 @@ DIR_LOGS = path.join(DIR_ROOT, 'logs')
 URL_BASE = 'https://www.wikihow.com/'
 URL_RANDOM = urljoin(URL_BASE, quote_plus('Special:Randomizer'))
 
+LOC_TEMP = path.join(DIR_ROOT, 'image.jpg')
 LOC_AUTH = path.join(DIR_ROOT, 'auth.json')

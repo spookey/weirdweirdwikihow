@@ -3,12 +3,13 @@ from random import choice
 
 from bs4 import BeautifulSoup
 
-from wwwhow.lib.pull import some_entry
+from wwwhow.lib.pull import load_image, some_entry
 
 
 class Entry(object):
-    def __init__(self):
-        self.log = getLogger(__name__)
+    def __init__(self, temp):
+        self._log = getLogger(__name__)
+        self._temp = temp
         self.url, html = some_entry()
         self._soup = BeautifulSoup(html, 'html.parser')
         self.title = None
@@ -16,7 +17,7 @@ class Entry(object):
         self.caption = None
 
     def _title(self):
-        self.log.debug('parsing entry title')
+        self._log.debug('parsing entry title')
         return self._soup.select(
             'h1.firstHeading'
         )[-1].select(
@@ -24,7 +25,7 @@ class Entry(object):
         )[-1].string
 
     def __pre_images(self):
-        self.log.debug('fetching image tags')
+        self._log.debug('fetching image tags')
         return self._soup.select(
             'div.mwimg.largeimage'
         )
@@ -33,7 +34,7 @@ class Entry(object):
         return choice(list(self.__pre_images()))
 
     def _image(self, image_tag):
-        self.log.debug('parsing image url from image tags')
+        self._log.debug('parsing image url from image tags')
         return image_tag.select(
             'noscript'
         )[-1].select(
@@ -41,7 +42,7 @@ class Entry(object):
         )[-1]['src']
 
     def _caption(self, image_tag):
-        self.log.debug('parsing image caption from image tags')
+        self._log.debug('parsing image caption from image tags')
         return image_tag.parent.select(
             'div.step'
         )[-1].select(
@@ -49,8 +50,9 @@ class Entry(object):
         )[-1].string
 
     def __call__(self):
+        self._log.debug('collecting fine data from the internet')
         self.title = self._title()
         image_tag = self._image_tag()
         self.image = self._image(image_tag)
         self.caption = self._caption(image_tag)
-        return self
+        load_image(self.image, self._temp)

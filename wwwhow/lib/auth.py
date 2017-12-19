@@ -47,4 +47,4 @@ class Auth(object):
             value = input('|> ').strip()
             if value:
                 setattr(self, field, value)
-        return self.save()
+        self.save()
