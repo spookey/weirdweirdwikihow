@@ -30,6 +30,8 @@ sort:
 define _gitclean
 	git clean \
 		-e "*.py" \
+		-e "auth.json" \
+		-e "logs/*.log" \
 		$(1)
 endef
 clean:
