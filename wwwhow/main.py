@@ -16,9 +16,6 @@ def run():
 
     auth = Auth(args.auth)
     if args.conf:
-        auth.renew()
-        return 0
+        return auth.renew()
 
-    bot = Robot(auth, args.temp)
-    bot(Entry(args.temp))
-    return 0
+    return Robot(auth)(Entry(args.temp)())

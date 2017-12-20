@@ -27,6 +27,7 @@ class Auth(object):
             data = loads(handle.read())
             for field in self._fields:
                 setattr(self, field, data.get(field, None))
+            return True
 
     def save(self):
         self._log.debug('save authentification data')
@@ -35,8 +36,7 @@ class Auth(object):
             for field in self._fields
         )
         with open(self._filename, 'w') as handle:
-            handle.write(dumps(data, indent=2, sort_keys=True))
-            return 0
+            return handle.write(dumps(data, indent=2, sort_keys=True))
 
     def renew(self):
         self._log.debug('renew authentification data')
@@ -47,4 +47,4 @@ class Auth(object):
             value = input('|> ').strip()
             if value:
                 setattr(self, field, value)
-        self.save()
+        return self.save()

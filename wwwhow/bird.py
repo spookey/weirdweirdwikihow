@@ -2,14 +2,13 @@ from tweepy import API, OAuthHandler
 
 
 class Robot(object):
-    def __init__(self, auth, temp):
+    def __init__(self, auth):
         self._auth = OAuthHandler(
             auth.consumer_key, auth.consumer_secret
         )
         self._auth.set_access_token(
             auth.access_token, auth.access_token_secret
         )
-        self._temp = temp
 
     @staticmethod
     def _status(entry):
@@ -25,7 +24,6 @@ class Robot(object):
         ).strip()
 
     def __call__(self, entry):
-        entry()
         status = self._status(entry)
         api = API(self._auth)
-        api.update_with_media(self._temp, status)
+        return api.update_with_media(entry.temp, status).id

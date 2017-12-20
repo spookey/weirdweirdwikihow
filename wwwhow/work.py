@@ -9,7 +9,7 @@ from wwwhow.lib.pull import load_image, some_entry
 class Entry(object):
     def __init__(self, temp):
         self._log = getLogger(__name__)
-        self._temp = temp
+        self.temp = temp
         self.url, html = some_entry()
         self._soup = BeautifulSoup(html, 'html.parser')
         self.title = None
@@ -55,4 +55,5 @@ class Entry(object):
         image_tag = self._image_tag()
         self.image = self._image(image_tag)
         self.caption = self._caption(image_tag)
-        load_image(self.image, self._temp)
+        load_image(self.image, self.temp)
+        return self
