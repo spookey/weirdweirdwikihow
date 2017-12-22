@@ -17,13 +17,10 @@ class Robot(object):
 
 ({title})
 {url}
-        '''.format(
-            caption=entry.caption,
-            title=entry.title,
-            url=entry.url
-        ).strip()
+        '''.format(**entry).strip()
 
     def __call__(self, entry):
         status = self._status(entry)
-        api = API(self._auth)
-        return api.update_with_media(entry.temp, status).id
+        return API(self._auth).update_with_media(
+            entry['image_name'], status, file=entry['image_stream']
+        ).id

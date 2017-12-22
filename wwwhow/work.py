@@ -3,18 +3,14 @@ from random import choice
 
 from bs4 import BeautifulSoup
 
-from wwwhow.lib.pull import load_image, some_entry
+from wwwhow.lib.pull import image_handle, random_entry
 
 
 class Entry(object):
-    def __init__(self, temp):
+    def __init__(self):
         self._log = getLogger(__name__)
-        self.temp = temp
-        self.url, html = some_entry()
+        self.url, html = random_entry()
         self._soup = BeautifulSoup(html, 'html.parser')
-        self.title = None
-        self.image = None
-        self.caption = None
 
     def _title(self):
         self._log.debug('parsing entry title')
@@ -24,16 +20,15 @@ class Entry(object):
             'a'
         )[-1].string
 
-    def __pre_images(self):
-        self._log.debug('fetching image tags')
-        return self._soup.select(
-            'div.mwimg.largeimage'
-        )
+    def _select_image(self):
+        self._log.debug('selecting some beautiful image element')
+        return choice(list(
+            self._soup.select(
+                'div.mwimg.largeimage'
+            )
+        ))
 
-    def _image_tag(self):
-        return choice(list(self.__pre_images()))
-
-    def _image(self, image_tag):
+    def _image_url(self, image_tag):
         self._log.debug('parsing image url from image tags')
         return image_tag.select(
             'noscript'
@@ -51,9 +46,13 @@ class Entry(object):
 
     def __call__(self):
         self._log.debug('collecting fine data from the internet')
-        self.title = self._title()
-        image_tag = self._image_tag()
-        self.image = self._image(image_tag)
-        self.caption = self._caption(image_tag)
-        load_image(self.image, self.temp)
-        return self
+        image_tag = self._select_image()
+        image_url = self._image_url(image_tag)
+        image_name, image_stream = image_handle(image_url)
+        return dict(
+            url=self.url,
+            title=self._title(),
+            caption=self._caption(image_tag),
+            image_name=image_name,
+            image_stream=image_stream
+        )
