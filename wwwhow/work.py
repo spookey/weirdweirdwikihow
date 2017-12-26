@@ -3,7 +3,7 @@ from random import choice
 
 from bs4 import BeautifulSoup
 
-from wwwhow.lib.pull import image_handle, fetch_entry
+from wwwhow.lib.pull import fetch_entry, image_handle
 
 
 class Entry(object):
@@ -44,15 +44,28 @@ class Entry(object):
             'b.whb'
         )[-1].string
 
+    def _caption_link(self, image_tag):
+        self._log.debug('parsing image caption link from image tags')
+        return image_tag.parent.select(
+            'div.step'
+        )[-1].select(
+            'b.whb'
+        )[-1].select(
+            'a'
+        )[-1].string
+
     def __call__(self):
         self._log.debug('collecting fine data from the internet')
         image_tag = self._select_image()
         image_url = self._image_url(image_tag)
         image_name, image_stream = image_handle(image_url)
+        caption = self._caption(image_tag)
+        if not caption:
+            caption = self._caption_link(image_tag)
         return dict(
             url=self.url,
             title=self._title(),
-            caption=self._caption(image_tag),
+            caption=caption,
             image_name=image_name,
             image_stream=image_stream
         )
