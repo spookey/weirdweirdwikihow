@@ -3,13 +3,13 @@ from random import choice
 
 from bs4 import BeautifulSoup
 
-from wwwhow.lib.pull import image_handle, random_entry
+from wwwhow.lib.pull import image_handle, fetch_entry
 
 
 class Entry(object):
-    def __init__(self):
+    def __init__(self, url):
         self._log = getLogger(__name__)
-        self.url, html = random_entry()
+        self.url, html = fetch_entry(url)
         self._soup = BeautifulSoup(html, 'html.parser')
 
     def _title(self):

@@ -5,15 +5,13 @@ from os import path
 from requests import codes, request
 from requests.exceptions import RequestException
 
-from wwwhow.lib.conf import URL_RANDOM
-
 LOG = getLogger(__name__)
 
 
-def random_entry():
+def fetch_entry(url):
     LOG.debug('try to get some random entry')
     try:
-        res = request('get', URL_RANDOM)
+        res = request('get', url)
         res.raise_for_status()
     except RequestException as req_ex:
         LOG.exception(req_ex)

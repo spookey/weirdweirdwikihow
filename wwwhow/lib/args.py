@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from wwwhow.lib.conf import DIR_LOGS, LOC_AUTH, NAME_APP
+from wwwhow.lib.conf import DIR_LOGS, LOC_AUTH, NAME_APP, URL_RANDOM
 from wwwhow.lib.note import LOG_LEVELS
 
 
@@ -29,6 +29,10 @@ def arguments():
     parser.add_argument(
         '-c', '--conf', default=False, action='store_true',
         help=_help('configure tweepy authentication')
+    )
+    parser.add_argument(
+        '-u', '--url', default=URL_RANDOM,
+        help=_help('wikihow entry url')
     )
 
     return parser.parse_args()
