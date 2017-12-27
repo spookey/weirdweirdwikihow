@@ -7,9 +7,10 @@ from wwwhow.lib.pull import fetch_entry, image_handle
 
 
 class Entry(object):
-    def __init__(self, url):
+    def __init__(self, args):
         self._log = getLogger(__name__)
-        self.url, html = fetch_entry(url)
+        self.pos = args.position
+        self.url, html = fetch_entry(args.url)
         self._soup = BeautifulSoup(html, 'html.parser')
 
     def _title(self):
@@ -22,11 +23,15 @@ class Entry(object):
 
     def _select_image(self):
         self._log.debug('selecting some beautiful image element')
-        return choice(list(
+        selection = list(
             self._soup.select(
                 'div.mwimg.largeimage'
             )
-        ))
+        )
+        if self.pos >= 0 and self.pos <= len(selection):
+            self._log.debug('using image element on position %d', self.pos)
+            return selection[self.pos]
+        return choice(selection)
 
     def _image_url(self, image_tag):
         self._log.debug('parsing image url from image tags')

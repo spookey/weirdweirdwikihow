@@ -34,5 +34,9 @@ def arguments():
         '-u', '--url', default=URL_RANDOM,
         help=_help('wikihow entry url')
     )
+    parser.add_argument(
+        '-p', '--position', default=-1, type=int,
+        help=_help('zero indexed image position in entry')
+    )
 
     return parser.parse_args()

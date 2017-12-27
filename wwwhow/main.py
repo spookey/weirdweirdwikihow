@@ -18,4 +18,4 @@ def run():
     if args.conf:
         return auth.renew()
 
-    return Robot(auth)(Entry(args.url)())
+    return Robot(auth)(Entry(args)())

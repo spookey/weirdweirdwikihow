@@ -9,7 +9,7 @@ LOG = getLogger(__name__)
 
 
 def fetch_entry(url):
-    LOG.debug('try to get some random entry')
+    LOG.debug('try to get some entry from url "%s"', url)
     try:
         res = request('get', url)
         res.raise_for_status()
@@ -17,9 +17,9 @@ def fetch_entry(url):
         LOG.exception(req_ex)
     else:
         if res.ok and res.status_code == codes.ok:
-            LOG.debug('succes - got random entry')
+            LOG.debug('success - got some entry')
             return res.url, res.text
-    LOG.error('error fetching random entry')
+    LOG.error('error fetching entry - sorry')
 
 
 class ImageStream(object):
@@ -72,5 +72,6 @@ def image_handle(url):
         LOG.exception(req_ex)
     else:
         if res.ok and res.status_code == codes.ok:
+            LOG.debug('success - got some beautiful image')
             return path.basename(res.url), ImageStream(res.iter_content(64))
-    LOG.error('error fetching beautiful image')
+    LOG.error('error fetching beautiful image - sorry')
