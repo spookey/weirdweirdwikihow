@@ -44,5 +44,5 @@ def log_setup(log_folder, log_level):
                 path.join(log_folder, '{}_debug.log'.format(NAME_APP)),
                 maxBytes=file_size, backupCount=4
             ),
-            formatter, level
+            formatter, DEBUG
         ))
