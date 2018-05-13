@@ -3,4 +3,4 @@
 from wwwhow.main import run
 
 if __name__ == '__main__':
-    exit(not run())
+    exit(run())

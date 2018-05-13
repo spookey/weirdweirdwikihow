@@ -5,12 +5,13 @@ from os import path
 
 class Auth(object):
     def __init__(self, filename):
-        self._log = getLogger(__name__)
+        self._log = getLogger(self.__class__.__name__)
         self._filename = filename
         self.consumer_key = None
         self.consumer_secret = None
         self.access_token = None
         self.access_token_secret = None
+        self._log.info('"%s" class created', self.__class__.__name__)
         self.load()
 
     @property
@@ -19,15 +20,26 @@ class Auth(object):
             key for key in vars(self).keys() if not key.startswith('_')
         ]
 
+    @property
+    def valid(self):
+        return all(getattr(self, field, None) for field in self._fields)
+
     def load(self):
         self._log.debug('load authentification data')
         if not path.exists(self._filename):
-            return
+            self._log.info(
+                'nothing to load - '
+                'file "%s" does not exist', self._filename
+            )
+            return True
         with open(self._filename, 'r') as handle:
             data = loads(handle.read())
             for field in self._fields:
                 setattr(self, field, data.get(field, None))
+            self._log.debug('loading of "%s" successful', self._filename)
             return True
+        self._log.warning('loading of "%s" failed', self._filename)
+        return False
 
     def save(self):
         self._log.debug('save authentification data')
@@ -36,9 +48,17 @@ class Auth(object):
             for field in self._fields
         )
         with open(self._filename, 'w') as handle:
-            return handle.write(dumps(data, indent=2, sort_keys=True))
+            length = handle.write(dumps(data, indent=2, sort_keys=True))
+            self._log.debug(
+                'saving to "%s" successful - '
+                '"%d" bytes',
+                self._filename, length
+            )
+            return True
+        self._log.warning('saving to "%s" failed', self._filename)
+        return False
 
-    def renew(self):
+    def __call__(self):
         self._log.debug('renew authentification data')
         for field in self._fields:
             print('|> "{}" ({})'.format(

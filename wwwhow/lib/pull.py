@@ -19,13 +19,17 @@ def fetch_entry(url):
         if res.ok and res.status_code == codes.ok:
             LOG.debug('success - got some entry')
             return res.url, res.text
+
     LOG.error('error fetching entry - sorry')
+    return None, ''
 
 
 class ImageStream(object):
     def __init__(self, req_iter):
+        self._log = getLogger(self.__class__.__name__)
         self._bytes = BytesIO()
         self._iter = req_iter
+        self._log.info('"%s" class created', self.__class__.__name__)
 
     def _load_all(self):
         self._bytes.seek(0, SEEK_END)
@@ -74,4 +78,6 @@ def image_handle(url):
         if res.ok and res.status_code == codes.ok:
             LOG.debug('success - got some beautiful image')
             return path.basename(res.url), ImageStream(res.iter_content(64))
+
     LOG.error('error fetching beautiful image - sorry')
+    return None, None

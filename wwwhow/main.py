@@ -16,6 +16,26 @@ def run():
 
     auth = Auth(args.auth)
     if args.conf:
-        return auth.renew()
+        if not auth():
+            LOG.error('configuration failed - exiting')
+            return 1
+        LOG.info('ok')
+        return 0
 
-    return Robot(auth)(Entry(args)())
+    if not auth.valid:
+        LOG.error('no auth data present - exiting')
+        return 1
+
+    work = Entry(args)
+    post = work()
+    if not post:
+        LOG.error('post not present - exiting')
+        return 1
+
+    bird = Robot(auth)
+    if not bird(post):
+        LOG.error('posting failed - exiting')
+        return 1
+
+    LOG.info('ok')
+    return 0
