@@ -24,7 +24,7 @@ def fetch_entry(url):
     return None, ''
 
 
-class ImageStream(object):
+class ImageStream:
     def __init__(self, req_iter):
         self._log = getLogger(self.__class__.__name__)
         self._bytes = BytesIO()

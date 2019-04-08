@@ -3,7 +3,7 @@ from logging import getLogger
 from os import path
 
 
-class Auth(object):
+class Auth:
     def __init__(self, filename):
         self._log = getLogger(self.__class__.__name__)
         self._filename = filename

@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from wwwhow.lib.pull import fetch_entry, image_handle
 
 
-class Entry(object):
+class Entry:
     def __init__(self, args):
         self._log = getLogger(self.__class__.__name__)
         self.pos = args.position

@@ -3,7 +3,7 @@ from logging import getLogger
 from tweepy import API, OAuthHandler
 
 
-class Robot(object):
+class Robot:
     def __init__(self, auth):
         self._log = getLogger(self.__class__.__name__)
         self._auth = OAuthHandler(
