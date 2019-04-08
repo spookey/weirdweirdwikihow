@@ -31,6 +31,10 @@ def arguments():
         help=_help('configure tweepy authentication')
     )
     parser.add_argument(
+        '-t', '--tries', default=9, type=int,
+        help=_help('maximum number to try get some image')
+    )
+    parser.add_argument(
         '-u', '--url', default=URL_RANDOM,
         help=_help('wikihow entry url')
     )

@@ -10,6 +10,7 @@ class Entry(object):
     def __init__(self, args):
         self._log = getLogger(self.__class__.__name__)
         self.pos = args.position
+        self.tries = abs(args.tries)
         self.url, html = fetch_entry(args.url)
         self._soup = BeautifulSoup(html, 'html.parser')
         self._log.info('"%s" class created', self.__class__.__name__)
@@ -119,17 +120,19 @@ class Entry(object):
             image_stream=image_stream
         )
 
-    def __call__(self, tries=3):
-        for attempt in range(tries):
+    def __call__(self):
+        for attempt in range(self.tries):
             result = self.__work()
             if result:
                 self._log.info('retrieving successful')
                 return result
-            self._log.warning('attempt "%d/%d" failed', 1 + attempt, tries)
+            self._log.warning(
+                'attempt "%d/%d" failed', 1 + attempt, self.tries
+            )
 
         self._log.error(
             'impossible to retrieve data in "%d" attempts - '
             'giving up',
-            tries
+            self.tries
         )
         return None
