@@ -1,4 +1,5 @@
 *.jpg
 *.json
 *.pyc
-logs/*.log
+logs/
+venv/
