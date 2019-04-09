@@ -15,27 +15,20 @@ def run():
     log_setup(NAME_WWWHOW, args.log, args.verbose)
     LOG.info('ready')
 
-    auth = Auth(args.auth)
-    if args.conf:
-        if not auth():
-            LOG.error('configuration failed - exiting')
-            return 1
-        LOG.info('ok')
-        return 0
-
-    if not auth.valid:
-        LOG.error('no auth data present - exiting')
-        return 1
+    auth = Auth(args)
+    code = auth()
+    if code is not None:
+        return code
 
     work = Entry(args)
     post = work()
     if not post:
-        LOG.error('post not present - exiting')
+        LOG.error('post not present')
         return 1
 
     bird = Robot(auth)
     if not bird(post):
-        LOG.error('posting failed - exiting')
+        LOG.error('posting failed')
         return 1
 
     LOG.info('ok')

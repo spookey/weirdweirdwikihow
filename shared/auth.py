@@ -4,9 +4,10 @@ from os import path
 
 
 class Auth:
-    def __init__(self, filename):
+    def __init__(self, args):
         self._log = getLogger(self.__class__.__name__)
-        self._filename = filename
+        self._filename = args.auth
+        self._conf = args.conf
         self.consumer_key = None
         self.consumer_secret = None
         self.access_token = None
@@ -32,12 +33,14 @@ class Auth:
                 'file "%s" does not exist', self._filename
             )
             return True
+
         with open(self._filename, 'r') as handle:
             data = loads(handle.read())
             for field in self._fields:
                 setattr(self, field, data.get(field, None))
             self._log.debug('loading of "%s" successful', self._filename)
             return True
+
         self._log.warning('loading of "%s" failed', self._filename)
         return False
 
@@ -55,10 +58,11 @@ class Auth:
                 self._filename, length
             )
             return True
+
         self._log.warning('saving to "%s" failed', self._filename)
         return False
 
-    def __call__(self):
+    def configure(self):
         self._log.debug('renew authentification data')
         for field in self._fields:
             print('|> "{}" ({})'.format(
@@ -68,3 +72,17 @@ class Auth:
             if value:
                 setattr(self, field, value)
         return self.save()
+
+    def __call__(self):
+        if self._conf:
+            if not self.configure():
+                self._log.error('configuration failed')
+                return 1
+            self._log.info('ok')
+            return 0
+
+        if not self.valid:
+            self._log.error('no auth data present')
+            return 1
+
+        return None
