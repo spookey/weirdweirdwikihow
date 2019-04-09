@@ -1,55 +1,38 @@
 WWWHOW := wwwhow
 TWFOLL := twfoll
+SHARED := shared
 
 
 .PHONY: help
 
 help:
-	@echo "[wh]"	"\t~>\t"	"WikiHow"
-	@echo "[tw]"	"\t~>\t"	"Twitter Follow"
-	@echo
-	@echo "linttw"		"\t\t"	"lint $(TWFOLL)"
-	@echo "lintwh"		"\t\t"	"lint $(WWWHOW)"
-	@echo "sorttw"		"\t\t"	"sort $(TWFOLL)"
-	@echo "sortwh"		"\t\t"	"sort $(WWWHOW)"
-	@echo
+	@echo "lint"		"\t\t"	"lint code"
+	@echo "sort"		"\t\t"	"sort imports"
 	@echo "clean"		"\t\t"	"show cleanup files"
 	@echo "cleangit"	"\t"	"do git cleanup"
 
 
-.PHONY: lintwh linttw
+.PHONY: lint
 
 define PYLINT_MESSAGE_TEMPLATE
 {C} {path}:{line}:{column} - {msg}
-	↪  {category} {module}.{obj} ({symbol} {msg_id})
+  ↪  {category} {module}.{obj} ({symbol} {msg_id})
 endef
 export PYLINT_MESSAGE_TEMPLATE
 
-define _pylint
+lint:
 	pylint \
 		--disable "C0111" `#missing docstring` \
 		--disable "RP0401" `#external dependencies` \
 		--msg-template="$$PYLINT_MESSAGE_TEMPLATE" \
 		--output-format="colorized" \
-			$(1)
-endef
-
-lintwh:
-	$(call _pylint,"$(WWWHOW)")
-linttw:
-	$(call _pylint,"$(TWFOLL)")
+			"$(WWWHOW)" "$(TWFOLL)" "$(SHARED)"
 
 
-.PHONY:  sortwh sorttw
+.PHONY: sort
 
-define _sort
-	isort -cs -fss -m=5 -y -rc $(1)
-endef
-
-sortwh:
-	$(call _sort,"$(WWWHOW)")
-sorttw:
-	$(call _sort,"$(TWFOLL)")
+sort:
+	isort -cs -fss -m=5 -y -rc "$(WWWHOW)" "$(TWFOLL)" "$(SHARED)"
 
 
 .PHONY: clean cleangit
