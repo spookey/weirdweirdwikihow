@@ -3,7 +3,7 @@ from random import choice
 
 from bs4 import BeautifulSoup
 
-from wwwhow.lib.pull import fetch_entry, image_handle
+from wwwhow.pull import fetch_entry, image_handle
 
 
 class Entry:

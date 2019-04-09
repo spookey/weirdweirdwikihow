@@ -1,16 +1,16 @@
 from argparse import ArgumentParser
 
-from wwwhow.lib.conf import DIR_LOGS, LOC_AUTH, NAME_APP, URL_RANDOM
-from wwwhow.lib.note import LOG_LEVELS
+from shared.conf import DIR_LOGS, LOC_AUTH, URL_RANDOM
+from shared.note import LOG_LEVELS
 
 
 def _help(txt):
     return '{txt} (default: %(default)s)'.format(txt=txt)
 
 
-def arguments():
+def _base_parser(name):
     parser = ArgumentParser(
-        NAME_APP, add_help=True, epilog='-.-'
+        name, add_help=True, epilog='-.-'
     )
 
     parser.add_argument(
@@ -30,6 +30,13 @@ def arguments():
         '-c', '--conf', default=False, action='store_true',
         help=_help('configure tweepy authentication')
     )
+
+    return parser
+
+
+def args_wwwhow(name):
+    parser = _base_parser(name)
+
     parser.add_argument(
         '-t', '--tries', default=9, type=int,
         help=_help('maximum number to try get some image')
