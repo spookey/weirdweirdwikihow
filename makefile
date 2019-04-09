@@ -1,10 +1,6 @@
 LEVEL := wwwhow
 
-.PHONY: run
 
-run:
-	python3 run.py \
-		--verbose debug
 
 .PHONY: lint sort
 
@@ -30,10 +26,12 @@ sort:
 define _gitclean
 	git clean \
 		-e "*.py" \
-		-e "auth.json" \
-		-e "logs/*.log" \
+		-e "*.json" \
+		-e "logs/" \
+		-e "venv/" \
 		$(1)
 endef
+
 clean:
 	$(call _gitclean,-ndx)
 cleangit:
