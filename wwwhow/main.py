@@ -1,9 +1,8 @@
 from logging import getLogger
 
 from shared.args import args_wwwhow
-from shared.auth import Auth
 from shared.conf import NAME_WWWHOW
-from shared.note import log_setup
+from shared.init import initialize
 from wwwhow.bird import Robot
 from wwwhow.work import Entry
 
@@ -11,12 +10,7 @@ LOG = getLogger(__name__)
 
 
 def run():
-    args = args_wwwhow(NAME_WWWHOW)
-    log_setup(NAME_WWWHOW, args.log, args.verbose)
-    LOG.info('ready')
-
-    auth = Auth(args)
-    code = auth()
+    code, args, auth = initialize(NAME_WWWHOW, args_wwwhow)
     if code is not None:
         return code
 

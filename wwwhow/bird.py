@@ -1,19 +1,9 @@
-from logging import getLogger
+from tweepy import API
 
-from tweepy import API, OAuthHandler
+from shared.bird import BaseRobot
 
 
-class Robot:
-    def __init__(self, auth):
-        self._log = getLogger(self.__class__.__name__)
-        self._auth = OAuthHandler(
-            auth.consumer_key, auth.consumer_secret
-        )
-        self._auth.set_access_token(
-            auth.access_token, auth.access_token_secret
-        )
-        self._log.info('"%s" class created', self.__class__.__name__)
-
+class Robot(BaseRobot):
     def _status(self, entry):
         self._log.debug('assembling entry text')
         status = '''
