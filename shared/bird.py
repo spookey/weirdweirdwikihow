@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from tweepy import OAuthHandler
+from tweepy import API, OAuthHandler
 
 
 class BaseRobot:
@@ -13,3 +13,14 @@ class BaseRobot:
             auth.access_token, auth.access_token_secret
         )
         self._log.info('"%s" class created', self.__class__.__name__)
+        self._api = None
+
+    @property
+    def api(self):
+        if self._api is None:
+            self._api = API(self._auth)
+            self._log.debug(
+                'API for "%s" object created',
+                self.__class__.__name__
+            )
+        return self._api

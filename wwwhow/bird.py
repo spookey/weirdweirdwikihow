@@ -1,5 +1,3 @@
-from tweepy import API
-
 from shared.bird import BaseRobot
 
 
@@ -19,7 +17,7 @@ class Robot(BaseRobot):
     def __call__(self, entry):
         self._log.debug('trying to post tweet')
 
-        tweet = API(self._auth).update_with_media(
+        tweet = self.api.update_with_media(
             entry['image_name'],
             self._status(entry),
             file=entry['image_stream']

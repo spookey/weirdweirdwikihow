@@ -1,8 +1,8 @@
 from logging import getLogger
 
-from shared.args import args_wwwhow
 from shared.conf import NAME_WWWHOW
 from shared.init import initialize
+from wwwhow.args import arguments
 from wwwhow.bird import Robot
 from wwwhow.work import Entry
 
@@ -10,7 +10,7 @@ LOG = getLogger(__name__)
 
 
 def run():
-    code, args, auth = initialize(NAME_WWWHOW, args_wwwhow)
+    code, args, auth = initialize(NAME_WWWHOW, arguments)
     if code is not None:
         return code
 
