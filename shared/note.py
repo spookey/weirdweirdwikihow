@@ -44,3 +44,5 @@ def log_setup(log_name, log_folder, log_level):
             ),
             formatter, DEBUG
         ))
+
+    root_log.debug('=' * 80)
