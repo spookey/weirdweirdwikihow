@@ -24,3 +24,16 @@ class BaseRobot:
                 self.__class__.__name__
             )
         return self._api
+
+    def limits(self):
+        result = {}
+        for limits in (
+                self.api.rate_limit_status() or {}
+        ).get('resources', {}).values():
+            result.update((
+                key, val.get('remaining', 0)
+            ) for key, val in limits.items())
+        return result
+
+    def limit(self, key):
+        return (self.limits() or {}).get(key, 0)

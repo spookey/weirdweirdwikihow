@@ -3,6 +3,7 @@ from os import path
 from requests.compat import quote_plus, urljoin
 
 NAME_WWWHOW = 'weirdweirdwikihow'
+NAME_TWFOLL = 'twitterfollow'
 
 DIR_ROOT = path.abspath(path.dirname(path.dirname(__file__)))
 
