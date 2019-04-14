@@ -20,7 +20,7 @@ class BaseRobot:
         if self._api is None:
             self._api = API(self._auth)
             self._log.debug(
-                'API for "%s" object created',
+                'API object for "%s" class created',
                 self.__class__.__name__
             )
         return self._api

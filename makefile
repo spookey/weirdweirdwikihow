@@ -22,8 +22,7 @@ export PYLINT_MESSAGE_TEMPLATE
 
 lint:
 	pylint \
-		--disable "C0111" `#missing docstring` \
-		--disable "RP0401" `#external dependencies` \
+		--disable "C0111" \
 		--msg-template="$$PYLINT_MESSAGE_TEMPLATE" \
 		--output-format="colorized" \
 			"$(WWWHOW)" "$(TWFOLL)" "$(SHARED)"

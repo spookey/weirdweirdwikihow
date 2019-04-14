@@ -80,7 +80,7 @@ class Entry:
 
         return div_link[-1].string
 
-    def __work(self):
+    def work(self):
         self._log.debug('collecting fine data from the internet')
 
         url = self.url
@@ -122,7 +122,7 @@ class Entry:
 
     def __call__(self):
         for attempt in range(self.tries):
-            result = self.__work()
+            result = self.work()
             if result:
                 self._log.info('retrieving successful')
                 return result
