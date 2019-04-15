@@ -12,3 +12,7 @@ LOC_AUTH = path.join(DIR_ROOT, 'auth.json')
 
 URL_BASE = 'https://www.wikihow.com/'
 URL_RANDOM = urljoin(URL_BASE, quote_plus('Special:Randomizer'))
+
+CODES_PASS = [
+    160
+]

@@ -1,6 +1,7 @@
 from tweepy.error import TweepError
 
 from shared.bird import BaseRobot
+from shared.conf import CODES_PASS
 
 
 class Robot(BaseRobot):
@@ -23,7 +24,10 @@ class Robot(BaseRobot):
                     '%s id "%s" %s', verb, user_id, user.name
                 )
             except TweepError as ex:
-                self._log.exception(ex)
+                if ex.api_code in CODES_PASS:
+                    self._log.info('ignoring error: "%s"', ex)
+                else:
+                    self._log.exception(ex)
 
     def __call__(self, num_unfollow, num_tofollow):
         num_unfollow = self.number(
