@@ -131,8 +131,8 @@ class Entry:
             )
 
         self._log.error(
-            'impossible to retrieve data in "%d" attempts - '
+            'impossible to retrieve data in "%d" attempts for "%s" - '
             'giving up',
-            self.tries
+            self.tries, self.url
         )
         return None
