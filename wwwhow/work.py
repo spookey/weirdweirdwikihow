@@ -91,6 +91,7 @@ class Entry:
         title = self._title()
         if not title:
             self._log.warning('title not present')
+            return None
 
         image_tag = self._get_image_tag()
         if not image_tag:
