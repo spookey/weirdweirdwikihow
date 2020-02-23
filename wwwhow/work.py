@@ -18,7 +18,7 @@ class Entry:
     def _title(self):
         self._log.debug('parsing entry title')
 
-        first_heading = self._soup.select('h1.firstHeading')
+        first_heading = self._soup.select('h1')
         if not first_heading:
             self._log.warning('no first heading present')
             return None
