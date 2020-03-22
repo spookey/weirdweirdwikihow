@@ -14,7 +14,7 @@ def run():
         return code
 
     bird = Robot(auth)
-    if not bird(args.num_unfollow, args.num_tofollow):
+    if not bird(args.num_unfollow, args.num_tofollow, args.account_name):
         LOG.error('follow failed')
         return 1
 

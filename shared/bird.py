@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from tweepy import API, OAuthHandler
+from tweepy import API, OAuthHandler, TweepError
 
 
 class BaseRobot:
@@ -37,3 +37,10 @@ class BaseRobot:
 
     def limit(self, key):
         return (self.limits() or {}).get(key, 0)
+
+    def save_get_user(self, ident):
+        try:
+            return self.api.get_user(ident)
+        except TweepError as ex:
+            self._log.exception(ex)
+        return None
