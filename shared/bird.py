@@ -38,7 +38,7 @@ class BaseRobot:
     def limit(self, key):
         return (self.limits() or {}).get(key, 0)
 
-    def save_get_user(self, ident):
+    def safe_get_user(self, ident):
         try:
             return self.api.get_user(ident)
         except TweepError as ex:

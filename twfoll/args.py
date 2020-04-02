@@ -14,7 +14,7 @@ def arguments(name):
     )
     parser.add_argument(
         '-n', '--name', default=None, type=str, dest='account_name',
-        help=arg_help('follow --random accounts from @name followers')
+        help=arg_help('follow up to --follow accounts from @name followers')
     )
 
     return parser.parse_args()

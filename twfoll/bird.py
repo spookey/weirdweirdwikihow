@@ -66,7 +66,7 @@ class Robot(BaseRobot):
             return True
 
         account_name = account_name.strip().lstrip('@')
-        if not self.save_get_user(account_name):
+        if not self.safe_get_user(account_name):
             self._log.error(
                 'account name "@%s" does not exist', account_name
             )
