@@ -1,5 +1,6 @@
 from random import choices
 
+from tweepy import Cursor
 from tweepy.error import TweepError
 
 from shared.bird import BaseRobot
@@ -65,27 +66,28 @@ class Robot(BaseRobot):
             )
             return True
 
-        account_name = account_name.strip().lstrip('@')
         if not self.safe_get_user(account_name):
             self._log.error(
-                'account name "@%s" does not exist', account_name
-            )
-            return False
-
-        followers = self.api.followers(account_name)
-        if not followers:
-            self._log.warning(
-                'nothing found to follow from "@%s"', account_name
+                'account "%s" not found', account_name
             )
             return False
 
         num_tofollow = self.number(
             num_tofollow, self.limit('/friendships/incoming')
         )
+        if not num_tofollow:
+            self._log.warning(
+                'no capacity (left) to follow from "%s"', account_name
+            )
+            return True
 
-        foll_ids = list(fol.id for fol in choices(followers, k=num_tofollow))
-        self.action(foll_ids, mode=True)
+        user_ids = choices([
+            user.id for user in
+            Cursor(self.api.followers, id=account_name).items(4 * num_tofollow)
+            if not user.protected
+        ], k=num_tofollow)
 
+        self.action(user_ids, mode=True)
         return True
 
     def __call__(self, num_unfollow, num_tofollow, account_name):
