@@ -15,6 +15,10 @@ class Entry:
         self._soup = BeautifulSoup(html, 'html.parser')
         self._log.info('"%s" class created', self.__class__.__name__)
 
+    @staticmethod
+    def first(result_set):
+        return next(iter(result_set))
+
     def _title(self):
         self._log.debug('parsing entry title')
 
@@ -23,12 +27,12 @@ class Entry:
             self._log.warning('no first heading present')
             return None
 
-        first_link = first_heading[-1].select('a')
+        first_link = self.first(first_heading).select('a')
         if not first_link:
             self._log.warning('no link in first heading present')
             return None
 
-        return first_link[-1].string
+        return self.first(first_link).string
 
     def _get_image_tag(self):
         self._log.debug('selecting some beautiful image element')
@@ -48,12 +52,12 @@ class Entry:
             self._log.warning('no noscript element in image tag present')
             return None
 
-        img_element = img_noscript[-1].select('img')
+        img_element = self.first(img_noscript).select('img')
         if not img_element:
             self._log.warning('no img element in image tag present')
             return None
 
-        return img_element[-1]['src']
+        return self.first(img_element)['src']
 
     def _image_caption(self, image_tag):
         self._log.debug('parsing image caption text from image tags')
@@ -63,22 +67,22 @@ class Entry:
             self._log.warning('no step div after image tag present')
             return None
 
-        div_caption = div_step[-1].select('b.whb')
+        div_caption = self.first(div_step).select('b.whb')
         if not div_caption:
             self._log.warning('no bold caption in step div present')
             return None
 
-        text = div_caption[-1].string
+        text = self.first(div_caption).string
         if text:
             return text
         self._log.info('no text caption available - trying link caption')
 
-        div_link = div_caption[-1].select('a')
+        div_link = self.first(div_caption).select('a')
         if not div_link:
             self._log.warning('no link in bold caption present')
             return None
 
-        return div_link[-1].string
+        return self.first(div_link).string
 
     def work(self):
         self._log.debug('collecting fine data from the internet')
