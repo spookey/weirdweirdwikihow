@@ -41,6 +41,12 @@ requirements: $(LIB_BS4) $(LIB_REQ) $(LIB_TWE)
 $(LIB_BS4) $(LIB_REQ) $(LIB_TWE): $(DIR_VENV)
 	$(CMD_PIP) install -r "requirements.txt"
 
+.PHONY: requirements-dev
+requirements-dev: $(CMD_PYLINT) $(CMD_ISORT)
+
+$(CMD_PYLINT) $(CMD_ISORT): $(DIR_VENV)
+	$(CMD_PIP) install -r "requirements-dev.txt"
+
 
 .PHONY: lint
 
@@ -50,7 +56,7 @@ define PYLINT_MESSAGE_TEMPLATE
 endef
 export PYLINT_MESSAGE_TEMPLATE
 
-lint:
+lint: $(CMD_PYLINT)
 	$(CMD_PYLINT) \
 		--disable "C0111" \
 		--msg-template="$$PYLINT_MESSAGE_TEMPLATE" \
@@ -60,7 +66,7 @@ lint:
 
 .PHONY: sort
 
-sort:
+sort: $(CMD_ISORT)
 	$(CMD_ISORT) -cs -fss -m=5 -y -rc "$(WWWHOW)" "$(TWFOLL)" "$(SHARED)"
 
 
